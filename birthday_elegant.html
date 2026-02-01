@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #232526 0%, #414345 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      overflow: hidden;
+    }
+    .container {
+      background: rgba(255,255,255,0.10);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      padding: 48px 36px 36px 36px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 420px;
+      width: 90vw;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 0.5em;
+      letter-spacing: 1px;
+      animation: fadeInDown 1.2s cubic-bezier(.77,0,.18,1) 0.2s both;
+    }
+    .subtitle {
+      color: #fcb69f;
+      font-size: 1.2rem;
+      margin-bottom: 1.5em;
+      animation: fadeIn 1.2s 0.8s both;
+    }
+    .confetti {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .wish {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 2em;
+      animation: fadeInUp 1.2s 1.2s both;
+    }
+    .signature {
+      color: #fcb69f;
+      font-size: 1.1rem;
+      margin-top: 2em;
+      font-style: italic;
+      animation: fadeIn 1.2s 1.8s both;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .shine {
+      background: linear-gradient(90deg, #fff 0%, #fcb69f 50%, #fff 100%);
+      background-size: 200% auto;
+      color: #fff;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 2.5s linear infinite;
+    }
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+  </style>
+</head>
+<body>
+  <canvas class="confetti"></canvas>
+  <div class="container">
+    <h1 class="shine">Happy Birthday, Platypuspery!</h1>
+    <div class="subtitle">Wishing you a year filled with success, joy, and adventure.</div>
+    <div class="wish">May your day be as wonderful and inspiring as you are.<br>Enjoy every moment and keep shining!<br><span style="font-size:2rem;">✨🎂🎉</span></div>
+    <div class="signature">— Your Friend</div>
+  </div>
+  <script>
+    // Elegant Confetti
+    const canvas = document.querySelector('.confetti');
+    const ctx = canvas.getContext('2d');
+    let W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+    let confetti = [];
+    const colors = ['#fcb69f','#fff','#ffecd2','#a1c4fd','#232526','#ffd93d'];
+    for(let i=0;i<120;i++){
+      confetti.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: 6+Math.random()*8,
+        d: Math.random()*Math.PI*2,
+        c: colors[Math.floor(Math.random()*colors.length)],
+        s: 1+Math.random()*2
+      });
+    }
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      for(let p of confetti){
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
+        ctx.fillStyle = p.c;
+        ctx.shadowColor = p.c;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.restore();
+        p.y += 1.1*p.s;
+        p.x += Math.sin(p.y*0.01)*1.2;
+        p.d += 0.05;
+        if(p.y > H+20){ p.y = -20; p.x = Math.random()*W; }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize',()=>{
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
