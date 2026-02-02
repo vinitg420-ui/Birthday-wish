@@ -8,6 +8,7 @@
 </head>
 <body>
   <div class="bts-bg"></div>
+  <div class="hearts-bg"></div>
   <div class="logo-watermark"></div>
   <canvas class="confetti"></canvas>
   <div class="container">
@@ -17,16 +18,57 @@
     <button class="nav-btn" id="btn-modal0" aria-controls="modal0" aria-haspopup="dialog">🎁 Click Me!</button>
     <button class="nav-btn" id="btn-modal1" aria-controls="modal1" aria-haspopup="dialog">🎁 Click Me Too!</button>
   </div>
+  <style>
+    @media (max-width: 600px) {
+      .container {
+        padding: 28px 6vw 22px 6vw !important;
+        max-width: 98vw !important;
+        border-radius: 16px !important;
+      }
+      .modal-content {
+        padding: 18px 6vw !important;
+        max-width: 96vw !important;
+        font-size: 1em !important;
+        border-radius: 12px !important;
+      }
+      h1 {
+        font-size: 1.5rem !important;
+      }
+      .subtitle, .wish {
+        font-size: 1em !important;
+      }
+      .nav-btn {
+        padding: 8px 10vw !important;
+        font-size: 1em !important;
+      }
+      .close {
+        font-size: 1.2em !important;
+        top: 6px !important;
+        right: 10px !important;
+      }
+    }
+    @media (max-width: 400px) {
+      .container, .modal-content {
+        padding-left: 2vw !important;
+        padding-right: 2vw !important;
+      }
+    }
+    /* Prevent horizontal scroll on mobile */
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden !important;
+    }
+  </style>
   <div class="modal" id="modal0">
-    <div class="modal-content">
+    <div class="modal-content modal-beach0">
       <span class="close" onclick="closeModal(0)">&times;</span>
       <div style="margin-top: 8px;">“Facts about Aquarius: They are known for their unique personalities and innovative thinking.”<span>💜</span></div>
     </div>
   </div>
   <div class="modal" id="modal1">
-    <div class="modal-content">
+    <div class="modal-content modal-beach1">
       <span class="close" onclick="closeModal(1)">&times;</span>
-      <div style="margin-top: 8px;">“Like a K-Drama hero, may you always find hope, friendship, and adventure!”<span>🌟</span></div>
+      <div style="margin-top: 8px;">“May the waves whisper your dreams ashore, and may every sunset bring you closer to a love as endless as the sea. Sometimes, the most beautiful tides are the ones you never saw coming.”<span>🏖️</span></div>
     </div>
   </div>
   <script src="assets/birthday_elegant.js"></script>
@@ -34,6 +76,81 @@
     // Attach modal open events for accessibility and separation of concerns
     document.getElementById('btn-modal0').addEventListener('click', function() { window.showModal(0); });
     document.getElementById('btn-modal1').addEventListener('click', function() { window.showModal(1); });
+
+    // Romantic animated hearts overlay
+    (function() {
+      const heartsBg = document.querySelector('.hearts-bg');
+      if (!heartsBg) return;
+      const canvas = document.createElement('canvas');
+      canvas.style.width = '100vw';
+      canvas.style.height = '100vh';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.position = 'absolute';
+      canvas.style.top = 0;
+      canvas.style.left = 0;
+      canvas.style.pointerEvents = 'none';
+      heartsBg.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width, H = canvas.height;
+      let hearts = [];
+      const heartColors = ['#ffb6c1','#ff69b4','#ff6f91','#fff0f5','#fcb6d9','#fff'];
+      function drawHeart(x, y, size, color, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.moveTo(x, y + size/4);
+        ctx.bezierCurveTo(x, y, x - size/2, y, x - size/2, y + size/4);
+        ctx.bezierCurveTo(x - size/2, y + size/2, x, y + size*0.8, x, y + size);
+        ctx.bezierCurveTo(x, y + size*0.8, x + size/2, y + size/2, x + size/2, y + size/4);
+        ctx.bezierCurveTo(x + size/2, y, x, y, x, y + size/4);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.restore();
+      }
+      function spawnHeart() {
+        hearts.push({
+          x: Math.random()*W,
+          y: H + 20,
+          size: 16 + Math.random()*18,
+          color: heartColors[Math.floor(Math.random()*heartColors.length)],
+          alpha: 0.7 + Math.random()*0.3,
+          speed: 0.7 + Math.random()*1.2,
+          drift: (Math.random()-0.5)*0.7
+        });
+      }
+      function animateHearts() {
+        ctx.clearRect(0,0,W,H);
+        for (let h of hearts) {
+          drawHeart(h.x, h.y, h.size, h.color, h.alpha);
+          h.y -= h.speed;
+          h.x += h.drift;
+          h.alpha -= 0.0008;
+        }
+        hearts = hearts.filter(h => h.y + h.size > 0 && h.alpha > 0.1);
+        if (hearts.length < 22) spawnHeart();
+        requestAnimationFrame(animateHearts);
+      }
+      animateHearts();
+      function resizeCanvas() {
+        // Use visualViewport for mobile browsers if available
+        const vw = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+        const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        canvas.width = W = vw;
+        canvas.height = H = vh;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      if (window.visualViewport) window.visualViewport.addEventListener('resize', resizeCanvas);
+    })();
+    // Touch: close modal on background tap
+    document.querySelectorAll('.modal').forEach(function(modal) {
+      modal.addEventListener('touchstart', function(e) {
+        if (e.target === modal) closeModal(modal.id.replace('modal',''));
+      });
+    });
   </script>
 </body>
 </html>
