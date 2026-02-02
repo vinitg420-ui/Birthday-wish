@@ -4,7 +4,176 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday!</title>
-  <link rel="stylesheet" href="assets/birthday_elegant.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #6a4bc6 0%, #b983ff 50%, #f5d0fe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+    .bts-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/2/20/BTS_for_Love_Yourself_Speak_Yourself_in_Sa%CC%83o_Paulo%2C_Brazil%2C_2019.jpg') center/cover no-repeat;
+      opacity: 0.32;
+      pointer-events: none;
+      filter: blur(0.5px) grayscale(0.08) brightness(1.1) contrast(1.1);
+      box-shadow: 0 0 0 999vw rgba(106,75,198,0.08) inset;
+      transition: opacity 0.7s;
+    }
+    .logo-watermark {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/0/09/BTS_logo.svg') center/30vw no-repeat;
+      opacity: 0.07;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .container {
+      background: rgba(255,255,255,0.13);
+      border-radius: 28px;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      padding: 54px 38px 38px 38px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 460px;
+      width: 92vw;
+      backdrop-filter: blur(2.5px);
+      border: 1.5px solid #fff2;
+      animation: popIn 1.2s cubic-bezier(.77,0,.18,1);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.85) translateY(40px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 0.5em;
+      letter-spacing: 1px;
+      animation: fadeInDown 1.2s cubic-bezier(.77,0,.18,1) 0.2s both;
+      text-shadow: 0 2px 16px #6a4bc6cc;
+    }
+    .subtitle {
+      color: #fcb69f;
+      font-size: 1.2rem;
+      margin-bottom: 1.2em;
+      animation: fadeIn 1.2s 0.8s both;
+    }
+    .kdrama-quote {
+      color: #fff;
+      font-size: 1.08rem;
+      font-style: italic;
+      margin-bottom: 1.1em;
+      animation: fadeIn 1.2s 1.1s both;
+      opacity: 0.92;
+    }
+    .confetti {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .wish {
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 2em;
+      animation: fadeInUp 1.2s 1.2s both;
+    }
+    .nav-btn {
+      margin: 18px 8px 0 8px;
+      padding: 10px 22px;
+      background: linear-gradient(90deg,#fff 60%,#fcb69f 100%);
+      color: #6a4bc6;
+      border: none;
+      border-radius: 999px;
+      font-size: 1.05em;
+      font-weight: 600;
+      box-shadow: 0 4px 16px #a78bfa33;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      z-index: 10;
+      outline: none;
+    }
+    .nav-btn:focus {
+      box-shadow: 0 0 0 3px #b983ff88;
+    }
+    .nav-btn:hover {
+      background: #6a4bc6;
+      color: #fff;
+      box-shadow: 0 6px 24px #6a4bc6aa;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(34,30,60,0.85);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.5s;
+    }
+    .modal-content {
+      background: #fff;
+      color: #6a4bc6;
+      border-radius: 18px;
+      padding: 36px 28px;
+      max-width: 340px;
+      text-align: center;
+      font-size: 1.15em;
+      box-shadow: 0 8px 32px #6a4bc6aa;
+      position: relative;
+      animation: popIn 0.7s;
+    }
+    .close {
+      position: absolute;
+      top: 10px; right: 18px;
+      font-size: 1.5em;
+      color: #b983ff;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+    .close:hover {
+      color: #6a4bc6;
+    }
+    .modal-content span {
+      font-size: 2em;
+      display: block;
+      margin: 12px 0 0 0;
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .shine {
+      background: linear-gradient(90deg, #fff 0%, #fcb69f 50%, #fff 100%);
+      background-size: 200% auto;
+      color: #fff;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 2.5s linear infinite;
+    }
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+    </style>
 </head>
 <body>
   <div class="bts-bg"></div>
@@ -14,13 +183,13 @@
     <h1 class="shine">Happy Birthday, Platypuspery!</h1>
     <div class="subtitle">Wishing you a day as special and unique as you are!</div>
     <div class="wish">May your day sparkle like a K-Drama finale and your year be as magical as a BTS concert.</div>
-    <button class="nav-btn" id="btn-modal0" aria-controls="modal0" aria-haspopup="dialog">🎁 Click Me!</button>
-    <button class="nav-btn" id="btn-modal1" aria-controls="modal1" aria-haspopup="dialog">🎁 Click Me Too!</button>
+    <button class="nav-btn" onclick="showModal(0)">🎁 Click Me!</button>
+    <button class="nav-btn" onclick="showModal(1)">🎁 Click Me Too!</button>
   </div>
   <div class="modal" id="modal0">
     <div class="modal-content">
       <span class="close" onclick="closeModal(0)">&times;</span>
-      <div style="margin-top: 8px;">“Facts about Aquarius: They are known for their unique personalities and innovative thinking.”<span>💜</span></div>
+      <div style="margin-top: 8px;">“You are loved more than you know. May your dreams take flight this year!”<span>💜</span></div>
     </div>
   </div>
   <div class="modal" id="modal1">
@@ -29,11 +198,73 @@
       <div style="margin-top: 8px;">“Like a K-Drama hero, may you always find hope, friendship, and adventure!”<span>🌟</span></div>
     </div>
   </div>
-  <script src="assets/birthday_elegant.js"></script>
   <script>
-    // Attach modal open events for accessibility and separation of concerns
-    document.getElementById('btn-modal0').addEventListener('click', function() { window.showModal(0); });
-    document.getElementById('btn-modal1').addEventListener('click', function() { window.showModal(1); });
+    // Elegant Confetti
+    const canvas = document.querySelector('.confetti');
+    const ctx = canvas.getContext('2d');
+    let W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+    let confetti = [];
+    const colors = ['#fcb69f','#fff','#ffecd2','#a1c4fd','#6a4bc6','#ffd93d'];
+    for(let i=0;i<120;i++){
+      confetti.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: 6+Math.random()*8,
+        d: Math.random()*Math.PI*2,
+        c: colors[Math.floor(Math.random()*colors.length)],
+        s: 1+Math.random()*2
+      });
+    }
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      for(let p of confetti){
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
+        ctx.fillStyle = p.c;
+        ctx.shadowColor = p.c;
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.restore();
+        p.y += 1.1*p.s;
+        p.x += Math.sin(p.y*0.01)*1.2;
+        p.d += 0.05;
+        if(p.y > H+20){ p.y = -20; p.x = Math.random()*W; }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize',()=>{
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+    // Modal logic with animation and keyboard navigation
+    function showModal(idx) {
+      const modal = document.getElementById('modal'+idx);
+      modal.style.display = 'flex';
+      setTimeout(() => { modal.querySelector('.modal-content').focus(); }, 100);
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(idx) {
+      document.getElementById('modal'+idx).style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    // Keyboard navigation for modals
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        document.body.style.overflow = '';
+      }
+    });
+    // Trap focus inside modal
+    document.querySelectorAll('.modal-content').forEach(modal => {
+      modal.setAttribute('tabindex', '0');
+      modal.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') e.preventDefault();
+      });
+    });
   </script>
 </body>
 </html>
